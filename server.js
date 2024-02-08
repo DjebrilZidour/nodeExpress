@@ -1,6 +1,5 @@
 // import express from "express";
 const express = require("express"); // Express js => framework nodeJs
-const fileSystem = require("fs");
 const bodyParser = require("body-parser");
 const controllers = require("./controllers/user");
 
