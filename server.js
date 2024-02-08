@@ -38,7 +38,10 @@ app.post("/login", (request, response) => {
   if (!isUserExist) {
     return response.status(404).json({ message: "sorry this email doesn't exist" });
   }
-  response.status(200).json({ message: "waiting for next step" });
+  if (isUserExist.password === body.password ) {
+    return response.status(200).json({message:"welcome back user"})
+  }
+  response.status(404).json({ message: "password incorrect" });
 });
 
 const searchForUserWithEmail = (incomingEmail) => {
