@@ -4,6 +4,8 @@ const fileSystem = require("fs");
 const loginController = (request, response) => {
   const body = request.body;
 
+  console.log(body);
+
   const isUserExist = searchForUserWithEmail(body.email);
   if (!isUserExist) {
     return response

@@ -1,9 +1,23 @@
 // import express from "express";
 const express = require("express"); // Express js => framework nodeJs
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const userRouter = require("./routes/user")
 const controllers = require("./controllers/user");
+const moduleRouter = require("./routes/modules");
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(
+  cors({
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+  })
+);
 
 // for express to understand request
 app.use(bodyParser.json());
@@ -13,13 +27,10 @@ app.get("/", (request, response) => {
   response.send("<h3> express js </h3>");
 });
 
-app.get("/login", (request, response) => {
-  response.send("<h3> login </h3>");
-});
 
-app.post("/register", controllers.signupController);
+app.use(userRouter)
 
-app.post("/login", controllers.loginController);
+app.use(moduleRouter)
 
 
 
