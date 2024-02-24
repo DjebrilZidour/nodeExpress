@@ -7,11 +7,13 @@ const loginController = (request, response) => {
   console.log(body);
 
   const isUserExist = searchForUserWithEmail(body.email);
+
   if (!isUserExist) {
     return response
       .status(404)
       .json({ message: "sorry this email doesn't exist" });
   }
+
   if (isUserExist.password === body.password) {
     return response.status(200).json({ message: "welcome back user" });
   }
@@ -41,6 +43,7 @@ const signupController = (request, response) => {
   } catch (err) {
     console.log(err);
   }
+  
   const data = dataBase ? JSON.parse(dataBase) : [];
   data.push(body);
   fileSystem.writeFileSync("database.json", JSON.stringify(data));
