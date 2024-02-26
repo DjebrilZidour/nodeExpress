@@ -43,11 +43,17 @@ const signupController = (request, response) => {
   } catch (err) {
     console.log(err);
   }
-  
+
   const data = dataBase ? JSON.parse(dataBase) : [];
-  data.push(body);
-  fileSystem.writeFileSync("database.json", JSON.stringify(data));
-  response.status(200).json({ message: "Account saved" });
+  if (!searchForUserWithEmail(body.email)) {
+    data.push(body);
+    fileSystem.writeFileSync("database.json", JSON.stringify(data));
+    response.status(200).json({ message: "Account saved" });
+
+  } else {
+    response.status(420).json ({message: "this email exist pls enter a new email"})
+  }
+
 };
 
 module.exports = { loginController: loginController, signupController };
