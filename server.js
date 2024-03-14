@@ -5,6 +5,7 @@ const cors = require("cors");
 const userRouter = require("./routes/user")
 const controllers = require("./controllers/user");
 const moduleRouter = require("./routes/modules");
+const bookRouter = require("./routes/book");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
     origin: "*",
   })
 );
+
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
@@ -31,6 +33,8 @@ app.get("/", (request, response) => {
 app.use(userRouter)
 
 app.use(moduleRouter)
+
+app.use(bookRouter)
 
 
 
