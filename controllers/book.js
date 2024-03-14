@@ -32,13 +32,13 @@ const createBookController = (req, res) => {
 
 }
 
-const getBookController = (req, res)=>{
+const getBookController = (req, res) => {
 
     const query = req.query
     let dataBase = null
 
     try {
-        dataBase = fileSystem.readFileSync("./bookDataBase.json","utf-8")
+        dataBase = fileSystem.readFileSync("./bookDataBase.json", "utf-8")
     } catch (err) {
         console.log(err);
     }
@@ -49,11 +49,36 @@ const getBookController = (req, res)=>{
 
     if (ifBookExist) {
         res.status(200).json(ifBookExist);
-    }else{
-        res.status(404).json({message:"sorry this book is not found"})
+    } else {
+        res.status(404).json({ message: "sorry this book is not found" })
     }
 
 
 }
 
-module.exports = { createBookController , getBookController };
+const deleteBookByName = (list, bookName) => {
+    const newList = list.filter((element) => {
+        return bookName !== element.bookName
+    })
+    return newList
+};
+
+const deleteBookController = (req, res) => {
+
+    const query = req.query
+    let dataBase = null
+    try {
+        dataBase = fileSystem.readFileSync("./bookDataBase.json", "utf-8")
+    } catch (err) {
+        console.log(err);
+    }
+    const data = dataBase ? JSON.parse(dataBase) : []
+    const newList = deleteBookByName(data, query.bookName)
+    console.log(newList);
+    fileSystem.writeFileSync("./bookDataBase.json", JSON.stringify(newList))
+    res.status(201).json({message:"book deleted "})
+    
+
+}
+
+module.exports = { createBookController, getBookController, deleteBookController };
