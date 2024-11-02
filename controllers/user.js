@@ -1,4 +1,3 @@
-
 const fileSystem = require("fs");
 
 const loginController = (request, response) => {
@@ -38,6 +37,21 @@ const searchForUserWithEmail = (incomingEmail) => {
 const signupController = (request, response) => {
   const body = request.body;
   let dataBase = null;
+
+  if (!body.firstName) {
+    return response.status(400).json({ err: "Please send firstName" });
+  }
+  if (body.firstName.length <= 2) {
+    return response.status(400).json({ err: "Please enter a valid firstName" });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const ifValidEmail = emailRegex.test(body.email); // true | false
+
+  // firstName , lastName , email , password -> 8char,@#$%^
+
+  // email => check the email with regExp email@gmail.com
+
   try {
     dataBase = fileSystem.readFileSync("./database.json", "utf-8");
   } catch (err) {
@@ -45,15 +59,15 @@ const signupController = (request, response) => {
   }
 
   const data = dataBase ? JSON.parse(dataBase) : [];
-  if (!searchForUserWithEmail(body.email)) {
+  if (searchForUserWithEmail(body.email) === undefined) {
     data.push(body);
     fileSystem.writeFileSync("database.json", JSON.stringify(data));
     response.status(200).json({ message: "Account saved" });
-
   } else {
-    response.status(420).json ({message: "this email exist pls enter a new email"})
+    response
+      .status(420)
+      .json({ message: "this email alread exists pls enter a new email" });
   }
-
 };
 
 module.exports = { loginController: loginController, signupController };

@@ -2,12 +2,12 @@
 const express = require("express"); // Express js => framework nodeJs
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const userRouter = require("./routes/user")
+const userRouter = require("./routes/user");
 const controllers = require("./controllers/user");
 const moduleRouter = require("./routes/modules");
 const bookRouter = require("./routes/book");
 
-const app = express();
+const app = express(); // initialise our app
 
 app.use(
   cors({
@@ -29,17 +29,21 @@ app.get("/", (request, response) => {
   response.send("<h3> express js </h3>");
 });
 
+app.get("/courses", (req, res) => {
+  res.json([
+    { title: "title 1", img: "img.pn" },
+    { title: "title 1", img: "img.pn" },
+  ]);
+});
 
-app.use(userRouter)
+app.use(userRouter);
 
-app.use(moduleRouter)
+app.use(moduleRouter);
 
-app.use(bookRouter)
-
-
+app.use(bookRouter);
 
 app.listen(3000, () => {
   console.log("SERVER STARTED");
 });
 
-// MVC == MODEL VIEW CONTROLLER
+// MVC == MODEL VIEW CONTROLLER --> SEPARATION
