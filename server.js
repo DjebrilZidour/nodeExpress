@@ -41,6 +41,8 @@ app.use(userRouter);
 app.use(moduleRouter);
 
 app.use(bookRouter);
+app.use(fetchUsersRouter)
+
 
 app.listen(3000, () => {
   console.log("SERVER STARTED");
