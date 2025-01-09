@@ -6,6 +6,7 @@ const userRouter = require("./routes/user");
 const controllers = require("./controllers/user");
 const moduleRouter = require("./routes/modules");
 const bookRouter = require("./routes/book");
+const fetchUsersRouter = require("./routes/fetchUsers")
 
 const app = express(); // initialise our app
 
@@ -41,6 +42,7 @@ app.use(userRouter);
 app.use(moduleRouter);
 
 app.use(bookRouter);
+
 app.use(fetchUsersRouter)
 
 
