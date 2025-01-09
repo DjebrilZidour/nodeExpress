@@ -4,7 +4,24 @@ const path = require('path');  //TODO   ASK ABDOU
 
 const dbPath = path.join(__dirname, 'database.json'); //TODO ASK ABDOU 
 
-// const loginController = 
+const loginController = (request, response) => {
+  const body = request.body;
+
+  console.log(body);
+
+  const isUserExist = searchForUserWithEmail(body.email);
+
+  if (!isUserExist) {
+    return response
+      .status(404)
+      .json({ message: "sorry this email doesn't exist" });
+  }
+
+  if (isUserExist.password === body.password) {
+    return response.status(200).json({ message: "welcome back user" });
+  }
+  response.status(404).json({ message: "password incorrect" });
+};
 // (request, response) => {
 //   const body = request.body;
 
