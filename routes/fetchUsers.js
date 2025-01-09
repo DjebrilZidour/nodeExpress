@@ -5,7 +5,7 @@ const controllers = require("../controllers/user");
 const fetchUsersRouter = express.Router();
 
 
-app.get('/users', controllers.usersController);
+app.get('/users', controllers.fetchUsersController);
 
 
 module.exports = fetchUsersRouter;

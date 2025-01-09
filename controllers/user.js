@@ -75,8 +75,7 @@ const signupController = (req, res) => {
     });
   });
 }
-
-(req, res) => {
+const fetchUsersController = (req, res) => {
   fs.readFile(dbPath, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
@@ -87,5 +86,17 @@ const signupController = (req, res) => {
     res.status(200).json({ users: db.users });
   });
 }
+
+// (req, res) => {
+//   fs.readFile(dbPath, 'utf8', (err, data) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).json({ message: 'Error reading database.' });
+//     }
+
+//     const db = JSON.parse(data);
+//     res.status(200).json({ users: db.users });
+//   });
+// }
 
 module.exports = { loginController: loginController, signupController , usersController};
