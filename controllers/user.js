@@ -1,20 +1,10 @@
-const fileSystem = require("fs");
+// const fileSystem = require("fs");  
+const fs = require('fs');
+const path = require('path');  //TODO   ASK ABDOU
 
-const loginController = (req, res) => {
-  const { name, email, password, phone } = req.body;
+const dbPath = path.join(__dirname, 'database.json'); //TODO ASK ABDOU 
 
-  // Basic validation
-  if (!name || !email || !password || !phone) {
-      return res.status(400).json({ message: 'All fields are required, including phone number.' });
-  }
-
-  // Simulate user creation (replace with DB logic)
-  const newUser = { id: Date.now(), name, email, password, phone };
-
-  console.log('User registered:', newUser);
-
-  return res.status(200).json({ message: 'User registered successfully' });
-};
+// const loginController = 
 // (request, response) => {
 //   const body = request.body;
 
@@ -49,44 +39,53 @@ const searchForUserWithEmail = (incomingEmail) => {
   return isUserExist;
 };
 
-const signupController = (request, response) => {
-  const body = request.body;
-  let dataBase = null;
+const signupController = (req, res) => {
+  const { name, email, password, phone } = req.body;
 
-  if (!body.firstName) {
-    return response.status(400).json({ err: "Please send firstName" });
-  }
-  if (body.firstName.length <= 2) {
-    return response.status(400).json({ err: "Please enter a valid firstName" });
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required.' });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const ifValidEmail = emailRegex.test(body.email); // true | false
+  // Read database.json
+  fs.readFile(dbPath, 'utf8', (err, data) => { //TODO ASK ABDOU 
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Error reading database.' });
+    }
 
-  // firstName , lastName , email , password -> 8char,@#$%^
+    const db = JSON.parse(data);
 
-  // email => check the email with regExp email@gmail.com
+    // Check if the email already exists
+    if (db.users.some((user) => user.email === email)) {
+      return res.status(400).json({ message: 'Email already exists.' });
+    }
 
-  try {
-    dataBase = fileSystem.readFileSync("./database.json", "utf-8");
-  } catch (err) {
-    console.log(err);
-  }
+    // Add the new user
+    const newUser = { name, email, password, phone };
+    db.users.push(newUser);
 
-  const data = dataBase ? JSON.parse(dataBase) : [];
-  if (searchForUserWithEmail(body.email) === undefined) {
-    data.push(body);
-    fileSystem.writeFileSync("database.json", JSON.stringify(data));
-    response.status(200).json({ message: "Account saved" });
-  } else {
-    response
-      .status(420)
-      .json({ message: "this email alread exists pls enter a new email" });
-  }
-};
-const usersController= (req, res) => {
-  // Replace with actual database logic
-  res.status(200).json({ users: mockDatabase });
+    // Write updated data back to database.json
+    fs.writeFile(dbPath, JSON.stringify(db, null, 2), (err) => { //TODO ASK ABDOU 
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error saving user.' });
+      }
+
+      res.status(200).json({ message: 'User registered successfully.' });
+    });
+  });
+}
+
+(req, res) => {
+  fs.readFile(dbPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Error reading database.' });
+    }
+
+    const db = JSON.parse(data);
+    res.status(200).json({ users: db.users });
+  });
 }
 
 module.exports = { loginController: loginController, signupController , usersController};

@@ -29,12 +29,12 @@ app.get("/", (request, response) => {
   response.send("<h3> express js </h3>");
 });
 
-app.get("/courses", (req, res) => {
-  res.json([
-    { title: "title 1", img: "img.pn" },
-    { title: "title 1", img: "img.pn" },
-  ]);
-});
+// app.get("/courses", (req, res) => {
+//   res.json([
+//     { title: "title 1", img: "img.pn" },
+//     { title: "title 1", img: "img.pn" },
+//   ]);
+// });
 
 app.use(userRouter);
 
