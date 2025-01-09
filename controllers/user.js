@@ -1,23 +1,38 @@
 const fileSystem = require("fs");
 
-const loginController = (request, response) => {
-  const body = request.body;
+const loginController = (req, res) => {
+  const { name, email, password, phone } = req.body;
 
-  console.log(body);
-
-  const isUserExist = searchForUserWithEmail(body.email);
-
-  if (!isUserExist) {
-    return response
-      .status(404)
-      .json({ message: "sorry this email doesn't exist" });
+  // Basic validation
+  if (!name || !email || !password || !phone) {
+      return res.status(400).json({ message: 'All fields are required, including phone number.' });
   }
 
-  if (isUserExist.password === body.password) {
-    return response.status(200).json({ message: "welcome back user" });
-  }
-  response.status(404).json({ message: "password incorrect" });
+  // Simulate user creation (replace with DB logic)
+  const newUser = { id: Date.now(), name, email, password, phone };
+
+  console.log('User registered:', newUser);
+
+  return res.status(200).json({ message: 'User registered successfully' });
 };
+// (request, response) => {
+//   const body = request.body;
+
+//   console.log(body);
+
+//   const isUserExist = searchForUserWithEmail(body.email);
+
+//   if (!isUserExist) {
+//     return response
+//       .status(404)
+//       .json({ message: "sorry this email doesn't exist" });
+//   }
+
+//   if (isUserExist.password === body.password) {
+//     return response.status(200).json({ message: "welcome back user" });
+//   }
+//   response.status(404).json({ message: "password incorrect" });
+// };
 
 const searchForUserWithEmail = (incomingEmail) => {
   let dataBase = null;
@@ -69,5 +84,9 @@ const signupController = (request, response) => {
       .json({ message: "this email alread exists pls enter a new email" });
   }
 };
+const usersController= (req, res) => {
+  // Replace with actual database logic
+  res.status(200).json({ users: mockDatabase });
+}
 
-module.exports = { loginController: loginController, signupController };
+module.exports = { loginController: loginController, signupController , usersController};
