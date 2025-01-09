@@ -1,9 +1,5 @@
-[{
-    "users": [
-      { "email": "djebril", "password": "1234" },
-      { "name": "djebril", "email": "djebrilacademy@gmail.com", "password": "1234" },
-      { "email": "John@example.com", "name": "John" },
-      { "email": "Johnn@example.com", "lastname": "John" },
-      { "email": "Johnn@example.com", "firstName": "qaq" }
-    ]
-  }]
+{
+  "users": [
+    { "name": "John Doe", "email": "john@example.com", "password": "1234" }
+  ]
+}

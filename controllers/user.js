@@ -1,8 +1,10 @@
-// const fileSystem = require("fs");  
-const fs = require('fs');
-const path = require('path');  //TODO   ASK ABDOU
+const fs = require("fs");
+const path = require("path");
+const dbPath = path.join(__dirname, "../database.json");
 
-const dbPath = path.join(__dirname, 'database.json'); //TODO ASK ABDOU 
+;  //TODO   ASK ABDOU
+
+ //TODO ASK ABDOU 
 
 const loginController = (request, response) => {
   const body = request.body;
@@ -93,16 +95,22 @@ const signupController = (req, res) => {
   });
 }
 const fetchUsersController = (req, res) => {
-  fs.readFile(dbPath, 'utf8', (err, data) => {
+  fs.readFile(dbPath, "utf8", (err, data) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ message: 'Error reading database.' });
+      console.error("Error reading database:", err.message);
+      return res.status(500).json({ message: "Error reading database." });
     }
 
-    const db = JSON.parse(data);
-    res.status(200).json({ users: db.users });
+    try {
+      const db = JSON.parse(data);
+      res.status(200).json({ users: db.users || [] });
+    } catch (parseError) {
+      console.error("Error parsing database JSON:", parseError.message);
+      res.status(500).json({ message: "Error parsing database." });
+    }
   });
-}
+};
+
 
 // (req, res) => {
 //   fs.readFile(dbPath, 'utf8', (err, data) => {
