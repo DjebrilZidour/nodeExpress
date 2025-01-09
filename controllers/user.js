@@ -116,4 +116,5 @@ const fetchUsersController = (req, res) => {
 //   });
 // }
 
-module.exports = { loginController: loginController, signupController , usersController};
+module.exports = {  signupController , fetchUsersController};
+// loginController: loginController,
